@@ -6,7 +6,7 @@
   <meta name="keywords" content="website keywords, website keywords" />
   <meta http-equiv="content-type" content="text/html;charset=utf-8" />
   <script type="text/javascript" src="{PATH}/templates/jquery.min.js"></script> 
-  <script type="text/javascript" src="{PATH}/templates/compressedscript.js"></script> 
+  <script type="text/javascript" src="{PATH}/templates/script.js"></script> 
   <link rel="stylesheet" type="text/css" href="{PATH}/templates/default/style/style.css" />
 </head>
 <body>

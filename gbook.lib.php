@@ -3,7 +3,7 @@
 if(!defined('GBOOK')) die('Die, Die, Die');
 
 function autoload($class) {
-	include_once(__DIR__ . "/classes/" . $class . ".class.php");
+	include_once(__DIR__ . '/classes/' . $class . '.class.php');
 }
 spl_autoload_register("autoload");
 
@@ -40,7 +40,7 @@ $gbook->is_logged_in(); // залогинен?
 			$separator = '--separator--';
 			$delimiter = array_search($separator,$data);
 			if(!$delimiter){
-				exit("Ошибка чтения data.dt. Укажите разделитель '$separator'");
+				exit('Ошибка чтения data.dt. Укажите разделитель '. $separator);
 			} else {
 				$hotwords = array_slice($data,0,$delimiter);
 				$smiles = array_slice($data,$delimiter+1);

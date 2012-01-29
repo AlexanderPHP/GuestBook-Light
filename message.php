@@ -99,11 +99,11 @@ if(isset($_POST['getmessage']) && $_POST['getmessage']){
 		isset($_POST['email']) && !empty($_POST['email']) && $gbook->auth == 0) {
 $err = true;
 		if(preg_match("/[\||\'|\<|\>|\[|\]|\"|\!|\?|\$|\@|\/|\\\|\&\~\*\{\+]/", $_POST['name']))
-			$err = false;
+			die('{st:0,txt:"Имя введено неверно!"}');
 		elseif(strlen($_POST['email']) > 30 || !filter_var($_POST['email'], FILTER_VALIDATE_EMAIL))
-			$err = false;
+			die('{st:0,txt:"E-mail введен неверно, либо его длина превышает 30 символов!"}');
 		elseif(strlen($_POST['msg']) > 300)
-			$err = false;
+			die('{st:0,txt:"Длина сообщения не должна превышать 300 символов!"}');
 	 
 		 if($err){
 			$msg = $gbook->clear($_POST['msg']);
