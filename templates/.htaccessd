@@ -1,0 +1,4 @@
+<FilesMatch "\.(tpl|css|png|gif|woff)$">
+Order Deny,Allow
+Deny from all
+</FilesMatch>
