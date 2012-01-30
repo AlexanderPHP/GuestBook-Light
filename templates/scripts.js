@@ -78,10 +78,11 @@ $(document).ready(function(){
 		dataType: "json",
 		success: function(msg){
  				if(!msg.st)
-					$("#error").css('visibility','visible').html(msg.err);
-				else
+					$("#error").css('display','block').html(msg.err);
+				else {
+					$("#error").css('display','none');
 					loadData(1);
-				}
+				}}
 	});
 	$("#myForm").trigger("reset");
 	return false;
