@@ -64,7 +64,7 @@ class dataBase{
 	}
 
 	public function fetch($fetch_style = PDO::FETCH_BOTH, $all = false){
-			if(isset($this->result) && !empty($this->result)){
+			if(!empty($this->result)){
 				if(!$all)
 					return $this->result->fetch($fetch_style);
 				else
