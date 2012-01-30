@@ -43,10 +43,10 @@ class Main extends Auth{
 	}
 	
 	public function deleteMessage($all, $id=''){
-			switch($all){
-				case 'one': dataBase::query("DELETE FROM msgs WHERE id = {$id}");break;
-				case 'all': dataBase::query("DELETE FROM msgs");break;
-			}
+			if(!$all)
+				dataBase::query("DELETE FROM msgs WHERE id = {$id}");
+			else
+				dataBase::query("DELETE FROM msgs");
 		}
 	
 	public function is_uniqid($id){

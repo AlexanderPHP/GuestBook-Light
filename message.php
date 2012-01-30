@@ -125,10 +125,10 @@ if(isset($_POST['getmessage']) && $_POST['getmessage']){
 } elseif(isset($_POST['deletemessage'])){
 	if($_POST['deletemessage'] AND isset($_POST['id']) AND ($gbook->is_uniqid($_POST['id']) OR $gbook->auth)){
 			$id = abs((int)$_POST['id']);
-			$gbook->deleteMessage('one',$id);
+			$gbook->deleteMessage(false,$id);
 			echo 'Ok';
 		} elseif($_POST['deletemessage'] == 'all' && $gbook->auth){
-				$gbook->deleteMessage('all');
+				$gbook->deleteMessage(true);
 			echo 'All deleted';
 		}
 }
