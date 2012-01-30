@@ -38,8 +38,8 @@ class Main extends Auth{
 			} else
 				$query = dataBase::query("SELECT id, name, email, msg, uniqid, ip, datetime FROM msgs ORDER BY id DESC LIMIT $start, $perpage",false,true);
 
-			$row = $query->fetchAll(PDO::FETCH_ASSOC);
-		return $row;
+		return $query->fetchAll(PDO::FETCH_ASSOC);
+		
 	}
 	
 	public function deleteMessage($all, $id=''){
