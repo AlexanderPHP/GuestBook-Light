@@ -78,7 +78,7 @@ $(document).ready(function(){
 		dataType: "json",
 		success: function(msg){
  				if(!msg.st)
-					$("#error").html(msg.err);
+					$("#error").css('visibility','visible').html(msg.err);
 				else
 					loadData(1);
 				}

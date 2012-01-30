@@ -482,3 +482,12 @@ float: right;
 	background: url(../images/menu.gif) 0 -64px;
 	padding: 8px 25px 0 10px;
 	}
+	
+#error{
+	background-color:#ffebe8;
+	border:1px solid #dd3c10;
+	padding:7px 3px;
+	text-align:center;
+	margin-top:10px;
+	visibility:hidden;
+}

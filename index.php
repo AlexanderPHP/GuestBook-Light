@@ -31,6 +31,7 @@ include 'gbook.lib.php';
 	$template->set('login',$gbook->returnData("admin_name"),'main');
 	$template->set('PATH',$pathtofolder,'main');
 	$template->set('PATH',$pathtofolder,'editor');
+	$template->set('errormsg','<div id="error"></div>','editor');
 	$template->set('editor',$template->compile('editor'),'main');
 	echo $template->compile('main');
 ?>

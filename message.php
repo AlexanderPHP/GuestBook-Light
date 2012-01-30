@@ -103,7 +103,7 @@ if(isset($_POST['getmessage']) && $_POST['getmessage']){
 		elseif(strlen($_POST['email']) > 50 || !filter_var($_POST['email'], FILTER_VALIDATE_EMAIL))
 			die('{"st":false,"err":"E-mail введен неверно, либо его длина превышает 50 символов!"}');
 		elseif(strlen($_POST['msg']) > $gbook->config['MAX_QUANTITY_SYMBOLS'])
-			die('{"st":false,"err":"Длина сообщения не должна превышать ' .$gbook->config['MAX_QUANTITY_SYMBOLS'] . 'символов!"}');
+			die('{"st":false,"err":"Длина сообщения не должна превышать ' .$gbook->config['MAX_QUANTITY_SYMBOLS'] . ' символов!"}');
 
 			$msg = $gbook->clear($_POST['msg']);
 			$msg = bbcode($msg);
