@@ -101,7 +101,10 @@ $(document).ready(function(){
 		type: "POST",
 		url: "message.php",
 		data: "savecomment=1&"+data,
-		success: function(){
+		success: function(msg){
+				//if(parseInt(msg.st)==0)
+				//	$.("#error").html(msg.txt);
+				//else
 					loadData(1);
 				}
 	});
