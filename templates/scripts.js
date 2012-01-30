@@ -12,7 +12,6 @@ function tag(tag1, tag2) {
 		}
 		 return false;
 	}
-
 $(document).ready(function(){
 	$("#loading").ajaxStart(function(){
 	 $(this).fadeIn("fast");
@@ -72,39 +71,15 @@ $(document).ready(function(){
 	});
 	
 	$("#myForm").submit(function(){
-	if($("input").is("#name") && $("input").is("#email")){
-		var msg  = $("#mess").val();
-		if (msg ==""){
-			alert ("Заполните текст сообщения!");
-			return false;
-		}
-		var name  = $("#name").val();
-		if (name ==""){
-			alert ("Введите имя!");
-			return false;
-		}
-		var email  = $("#email").val();
-		if (email ==""){
-			alert ("Введите ваш e-mail!");
-			return false;
-		}		
-		var data = "name="+ name + "&email=" + email + "&msg=" + msg;
-	} else if($("textarea").is("#mess")){
-			var msg  = $("#mess").val();
-			if (msg ==""){
-				alert ("Заполните текст сообщения!");
-				return false;
-			}
-			var data = "msg=" + msg;
-	}
 	$.ajax({
 		type: "POST",
 		url: "message.php",
-		data: "savecomment=1&"+data,
+		data: "savecomment=1&"+$('#myForm').serialize(),
+		dataType: "json",
 		success: function(msg){
-				//if(parseInt(msg.st)==0)
-				//	$.("#error").html(msg.txt);
-				//else
+ 				if(!msg.st)
+					$("#error").html(msg.err);
+				else
 					loadData(1);
 				}
 	});

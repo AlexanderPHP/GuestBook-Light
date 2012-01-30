@@ -94,28 +94,33 @@ if(isset($_POST['getmessage']) && $_POST['getmessage']){
 	echo $msg;
  }
 } elseif(isset($_POST['savecomment']) && $_POST['savecomment']){
-	 if(isset($_POST['name']) && !empty($_POST['name']) &&
-		isset($_POST['msg']) && !empty($_POST['msg']) &&
-		isset($_POST['email']) && !empty($_POST['email']) && $gbook->auth == 0) {
-$err = true;
-		if(preg_match("/[\||\'|\<|\>|\[|\]|\"|\!|\?|\$|\@|\/|\\\|\&\~\*\{\+]/", $_POST['name']))
-			die('{st:0,txt:"Имя введено неверно!"}');
-		elseif(strlen($_POST['email']) > 30 || !filter_var($_POST['email'], FILTER_VALIDATE_EMAIL))
-			die('{st:0,txt:"E-mail введен неверно, либо его длина превышает 30 символов!"}');
-		elseif(strlen($_POST['msg']) > 300)
-			die('{st:0,txt:"Длина сообщения не должна превышать 300 символов!"}');
-	 
-		 if($err){
+	 if(isset($_POST['name']) && isset($_POST['msg']) && isset($_POST['email']) && !$gbook->auth) {
+		
+		if(empty($_POST['name']) || empty($_POST['msg']) || empty($_POST['email']))
+			die('{"st":false,"err":"Не заполнены обязательные поля!"}');
+		elseif(preg_match("/[\||\'|\<|\>|\[|\]|\"|\!|\?|\$|\@|\/|\\\|\&\~\*\{\+]/", $_POST['name']))
+			die('{"st":false,"err":"Имя введено неверно!"}');
+		elseif(strlen($_POST['email']) > 50 || !filter_var($_POST['email'], FILTER_VALIDATE_EMAIL))
+			die('{"st":false,"err":"E-mail введен неверно, либо его длина превышает 50 символов!"}');
+		elseif(strlen($_POST['msg']) > $gbook->config['MAX_QUANTITY_SYMBOLS'])
+			die('{"st":false,"err":"Длина сообщения не должна превышать ' .$gbook->config['MAX_QUANTITY_SYMBOLS'] . 'символов!"}');
+
 			$msg = $gbook->clear($_POST['msg']);
 			$msg = bbcode($msg);
 			$name = $gbook->clear($_POST['name']);
 			$email = $gbook->clear($_POST['email']);
 			$gbook->save('g', $msg, $name, $email);
-		 }
-	} elseif(isset($_POST['msg']) && !empty($_POST['msg']) && $gbook->auth == 1) {
+			echo '{"st":true}';
+			
+	} elseif(isset($_POST['msg']) && $gbook->auth) {
+			if(empty($_POST['msg']))
+				die('{"st":false,"err":"Заполните текст сообщения!"}');
+			
 			$msg = $gbook->clear($_POST['msg']);
 			$msg = bbcode($msg);
 			$gbook->save('a', $msg);
+			echo '{"st":true}';
+			
 	}
 } elseif(isset($_POST['deletemessage'])){
 	if($_POST['deletemessage'] AND isset($_POST['id']) AND ($gbook->is_uniqid($_POST['id']) OR $gbook->auth)){
