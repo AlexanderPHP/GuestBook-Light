@@ -1,11 +1,14 @@
 <?php
 class dataBase{
-	static private $_db, $result;
+	static public $instance = null;
+	private $result, $db;
+	
 	const DB_NAME = 'data/gbook.db'; // DB PATH
-	public function __construct() {
+	private function __construct() {
+		# если БД не существет, создаем и наполняем нужными данными
 			if(!file_exists(self::DB_NAME)){
 				try {
-					self::$_db = new PDO("sqlite:".self::DB_NAME);
+					$this->db = new PDO("sqlite:".self::DB_NAME);
 					$sql[] = "CREATE TABLE msgs(
 												id INTEGER PRIMARY KEY,
 												name TEXT,
@@ -21,7 +24,7 @@ class dataBase{
 					$sql[] = "CREATE TABLE bans(data TEXT)";
 					$sql[] = "INSERT INTO data(admin_name,admin_password,admin_email) VALUES('Admin','pass','localhost@localhost')";
 					foreach($sql as $tsql){
-						dataBase::query($tsql);
+						$this->query($tsql);
 					}
 					self::$_db = null;
 					exit("База Данных успешно создана!<br>Обновите вашу страничку!");
@@ -43,26 +46,38 @@ class dataBase{
 					exit();
 				}
 			} else {
-				self::$_db = new PDO("sqlite:".self::DB_NAME);
+				$this->db = new PDO("sqlite:".self::DB_NAME);
 			}
 	}
 	
-	static public function query($query,$bind=false,$return=false){
+	# реализация Singleton
+	
+	public static function getInstance(){
+						self::$instance = new dataBase();
+					return self::$instance;
+	}
+	
+	# Подготовка и выполнение запросов
+	
+	public function query($query,$bind=false,$return=false){
 			if(!$bind){
-				self::$result = self::$_db->prepare($query);
+				$this->result = $this->db->prepare($query);
 			} elseif(is_array($bind)){
-				self::$result = self::$_db->prepare($query);
+				$this->result = $this->db->prepare($query);
 				foreach($bind as $k=>$v){
-					self::$result->bindValue("$k","$v");
+					$this->result->bindValue("$k","$v");
 				}
 			} else
 				return false;
 			
-			self::$result->execute();
+			$this->result->execute();
+			
 			if($return)
-				return self::$result;
+				return $this->result;
 	}
-
+	
+	# небольшая надстройка над PDO::Fetch()
+	
 	public function fetch($fetch_style = PDO::FETCH_BOTH, $all = false){
 			if(!empty($this->result)){
 				if(!$all)
@@ -72,9 +87,11 @@ class dataBase{
 			} else 
 				return false;
 	}
+
+	# разрыв совединения с БД при удалении объекта класса
 	
 	public function __destruct(){
-			dataBase::$_db = null;
+			$this->db = null;
 	}
 }
 ?>
