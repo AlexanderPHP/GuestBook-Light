@@ -10,6 +10,8 @@ spl_autoload_register("autoload");
 $gbook = new Main();
 $gbook->is_logged_in(); // залогинен?
 
+	# Установка сортировки сообшений
+
 	function setSortMessage($sort){
 			if($sort == 'descending')
 				$_SESSION['sort'] = 'descending';
@@ -19,6 +21,8 @@ $gbook->is_logged_in(); // залогинен?
 				$_SESSION['sort'] = 'descending';
 			header('Location: index.php');
 	}
+	
+	# Вывод меню сортировки, в зависимости от выбранного метода сортировки сообщений
 	
  	function SortSelected(){
 			if(isset($_SESSION['sort'])){
@@ -33,6 +37,8 @@ $gbook->is_logged_in(); // залогинен?
 								 <option value="ascending">По возрастанию</option>';
 		return $selected;
 	}
+	
+	# Замено смайлов и bad-слов на соответствующие им значения в файле data.dt
 	
 	function Replacer($text){
 		global $gbook;
@@ -52,6 +58,8 @@ $gbook->is_logged_in(); // залогинен?
 			$replace = str_replace($hotwords,$gbook->config['CENSORESHIP'],$replace);
 		return $replace;
 	}
+	
+	# Замена BB-кодов на соответствующие им html-теги
 	
  	function bbcode($text) {
 			$str_search = array(

@@ -1,12 +1,16 @@
 <?php
-class Auth extends dataBase{
-	public $auth;
-	protected $data;
+
+# Класс авторизации
+ 
+class Auth{
+	public $auth; # статус (1 - администратор, 0 - соответственно гость)
+	protected $data; # данные администратора
 	
  	public function __construct(){
-			parent::__construct();
 			$this->data = $this->SelectLPE();
 	}
+	
+	# Метод авторизации
 	
 	public function Login($l,$p){
 			if($l == $this->data['admin_name'] && $p == $this->data['admin_password']){
@@ -18,18 +22,24 @@ class Auth extends dataBase{
 			}
 	}
 	
+	# Выхода из аккаунта
+	
 	public function Logout(){
 			setcookie('GPASS','',time()-3600);
 			$this->auth = 0;
 			header('Location: index.php');
 	}
 
+	# Проверка на "залогиненность"
+	
 	public function is_logged_in(){
 			if(isset($_COOKIE['GPASS']) && $_COOKIE['GPASS'] == md5($this->data['admin_password']))
 				$this->auth = 1;
 			else
 				$this->auth = 0;
 	}
+	
+	# Использование админ. данных
 	
 	public function ReturnData($value){
 			if(isset($this->data["$value"]))
@@ -38,8 +48,10 @@ class Auth extends dataBase{
 				return false;
 	}
 
+	# Запрос на загрузку админ. данных
+	
 	private function SelectLPE(){		
-		return dataBase::query("SELECT admin_name,admin_password,admin_email FROM data",false,true)->fetch(PDO::FETCH_ASSOC);
+		return dataBase::getInstance()->query("SELECT admin_name,admin_password,admin_email FROM data",false,true)->fetch(PDO::FETCH_ASSOC);
 	}
 	
 }

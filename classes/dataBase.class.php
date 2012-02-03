@@ -46,6 +46,8 @@ class dataBase{
 					exit();
 				}
 			} else {
+			# иначе просто подключаемся к ней
+			
 				$this->db = new PDO("sqlite:".self::DB_NAME);
 			}
 	}
@@ -88,7 +90,7 @@ class dataBase{
 				return false;
 	}
 
-	# разрыв совединения с БД при удалении объекта класса
+	# разрыв соединения с БД при удалении объекта класса
 	
 	public function __destruct(){
 			$this->db = null;
