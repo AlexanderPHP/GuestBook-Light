@@ -26,19 +26,20 @@ $gbook->is_logged_in(); // залогинен?
 	
  	function SortSelected(){
 			if(isset($_SESSION['sort'])){
-				if($_SESSION['sort'] == 'descending')
-					$selected = '<option value="descending" selected="selected">По убываню</option>
-								 <option value="ascending">По возрастанию</option>';
-				elseif($_SESSION['sort'] == 'ascending')
-					$selected = '<option value="descending">По убываню</option>
-								 <option value="ascending"  selected="selected">По возрастанию</option>';
-			} else
-					$selected = '<option value="descending">По убываню</option>
-								 <option value="ascending">По возрастанию</option>';
-		return $selected;
+				switch($_SESSION['sort']){
+					case 'descending': $options = '<option value="descending" selected="selected">По убываню</option>
+													<option value="ascending">По возрастанию</option>';break;
+					
+					case 'ascending': $options = '<option value="descending">По убываню</option>
+												   <option value="ascending"  selected="selected">По возрастанию</option>';break;
+					
+					default: $options = '<option value="descending">По убываню</option>
+										  <option value="ascending">По возрастанию</option>';break;
+			}
+		return $options;
 	}
 	
-	# Замено смайлов и bad-слов на соответствующие им значения в файле data.dt
+	# Замена смайлов и bad-слов на соответствующие им значения в файле data.dt
 	
 	function Replacer($text){
 		global $gbook;

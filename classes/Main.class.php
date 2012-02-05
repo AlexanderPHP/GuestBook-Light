@@ -59,8 +59,7 @@ class Main extends Auth{
 	}
 	
 	public function PagCount(){
-			$sql = "SELECT COUNT(*) AS count FROM msgs";
-			$result = dataBase::getInstance()->query($sql,false,true)->fetch(PDO::FETCH_ASSOC);
+			$result = dataBase::getInstance()->query("SELECT COUNT(*) AS count FROM msgs",false,true)->fetch(PDO::FETCH_ASSOC);
 		return $result['count'];
 	}
 	
