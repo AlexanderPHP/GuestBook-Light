@@ -13,9 +13,8 @@ include 'gbook.lib.php';
 		$gbook->Login($_POST['login'],$_POST['pass']);//если был POST, пробуем залогинить
 	if(isset($_POST['logout'])) //выход
 		$gbook->Logout();
-	 if(isset($_POST['sort'])){
+	if(isset($_POST['sort']))
 		setSortMessage($_POST['sort']);
-		}
 	
 	if((isset($_GET['del']) || isset($_GET['delall'])) && ($gbook->auth == 1 || $gbook->is_uniqid($_GET['del']))) include 'deletepost.inc.php';
 		

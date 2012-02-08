@@ -13,13 +13,12 @@ $gbook->is_logged_in(); // залогинен?
 	# Установка сортировки сообшений
 
 	function setSortMessage($sort){
-			if($sort == 'descending')
-				$_SESSION['sort'] = 'descending';
-			elseif($sort == 'ascending')
-				$_SESSION['sort'] = 'ascending';
-			else
-				$_SESSION['sort'] = 'descending';
-			header('Location: index.php');
+			switch($sort){
+				case 'descending': $_SESSION['sort'] = 'descending';break;
+				case 'ascending': $_SESSION['sort'] = 'ascending';break;
+				default: $_SESSION['sort'] = 'descending';break;
+			}
+		header('Location: index.php');
 	}
 	
 	# Вывод меню сортировки, в зависимости от выбранного метода сортировки сообщений
@@ -29,12 +28,12 @@ $gbook->is_logged_in(); // залогинен?
 				switch($_SESSION['sort']){
 					case 'descending': $options = '<option value="descending" selected="selected">По убываню</option><option value="ascending">По возрастанию</option>';break;					
 					case 'ascending': $options = '<option value="descending">По убываню</option><option value="ascending"  selected="selected">По возрастанию</option>';break;					
-					default: $options = '<option value="descending">По убываню</option><option value="ascending">По возрастанию</option>';break;
 				}
 				return $options;
 			} else
 				return '<option value="descending">По убываню</option><option value="ascending">По возрастанию</option>';
 	}
+	
 	# Замена смайлов и bad-слов на соответствующие им значения в файле data.dt
 	
 	function Replacer($text){
