@@ -5,7 +5,7 @@ if(substr($_SERVER['REQUEST_URI'],-strlen(basename(__FILE__))) != basename(__FIL
 }
 define('GBOOK',true);
 session_start();
-$pathtofolder = 'http://'.$_SERVER['SERVER_NAME'].dirname($_SERVER['REQUEST_URI']);
+$path = 'http://'.$_SERVER['SERVER_NAME'].dirname($_SERVER['REQUEST_URI']);
 include 'gbook.lib.php';
 	$template = new Template($gbook->config['PATH_TO_TEMPLATE']);
 
@@ -27,10 +27,11 @@ include 'gbook.lib.php';
 	} else
 		$template->set_block('admin', '', 'main');
 
-	$template->set('select',sortSelected(),'main');
+	$template->set('select',SortSelected(),'main');
+	$template->set('messages','<div id="container"><div class="data"></div><div class="pagination"></div></div>','main');
 	$template->set('login',$gbook->returnData("admin_name"),'main');
-	$template->set('PATH',$pathtofolder,'main');
-	$template->set('PATH',$pathtofolder,'editor');
+	$template->set('PATH',$path,'main');
+	$template->set('PATH',$path,'editor');
 	$template->set('errormsg','<div id="error"></div>','editor');
 	$template->set('editor',$template->compile('editor'),'main');
 	echo $template->compile('main');

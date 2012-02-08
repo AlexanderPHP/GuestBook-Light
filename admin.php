@@ -8,11 +8,10 @@ include 'gbook.lib.php';
 		header('refresh:5;url=index.php');
 		exit('<b>Acces Denied!</b>');
 	}
-$pathtofolder = 'http://'.$_SERVER['SERVER_NAME'].dirname($_SERVER['REQUEST_URI']);
 $template = new Template($gbook->config['PATH_TO_TEMPLATE']);
 $template->open('admin.tpl','admin');
 
-	$template->set('PATH',$pathtofolder,'admin');
+	$template->set('PATH','http://'.$_SERVER['SERVER_NAME'].dirname($_SERVER['REQUEST_URI']),'admin');
 
 	if(!isset($_GET['action']) || $_GET['action'] == 'main')
 		$template->set('content','<div style="padding-top:500px;" id="loading"></div><div id="container"><div class="data"></div><div class="pagination"></div></div>','admin');

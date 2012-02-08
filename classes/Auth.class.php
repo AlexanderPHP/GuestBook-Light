@@ -13,12 +13,13 @@ class Auth{
 	# Метод авторизации
 	
 	public function Login($l,$p){
-			if($l == $this->data['admin_name'] && $p == $this->data['admin_password']){
+			if($l == $this->data['admin_name'] && md5($p) == $this->data['admin_password']){
 				setcookie('GPASS',md5($p), time()+999999);
 				$this->auth = 1;
 				header('Location: index.php');
 			} else {
 				$this->auth = 0;
+				var_dump(md5($p),$this->data['admin_password']);
 			}
 	}
 	
@@ -33,7 +34,7 @@ class Auth{
 	# Проверка на "залогиненность"
 	
 	public function is_logged_in(){
-			if(isset($_COOKIE['GPASS']) && $_COOKIE['GPASS'] == md5($this->data['admin_password']))
+			if(isset($_COOKIE['GPASS']) && $_COOKIE['GPASS'] == $this->data['admin_password'])
 				$this->auth = 1;
 			else
 				$this->auth = 0;

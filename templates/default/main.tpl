@@ -72,10 +72,7 @@
 		<div id="loading" style="position: fixed; display: none;">
 			<img class="load" src="{PATH}/templates/loading.gif">
 		</div>
-	   <div id="container">
-            <div class="data"></div>
-            <div class="pagination"></div>
-        </div>
+		{messages}
       </div>
     </div>
     <div id="footer">
