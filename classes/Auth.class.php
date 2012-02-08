@@ -1,16 +1,16 @@
 <?php
 
-# Êëàññ àâòîðèçàöèè
+# ÐšÐ»Ð°ÑÑ Ð°Ð²Ñ‚Ð¾Ñ€Ð¸Ð·Ð°Ñ†Ð¸Ð¸
  
 class Auth{
-	public $auth; # ñòàòóñ (1 - àäìèíèñòðàòîð, 0 - ñîîòâåòñòâåííî ãîñòü)
-	protected $data; # äàííûå àäìèíèñòðàòîðà
+	public $auth; # ÑÑ‚Ð°Ñ‚ÑƒÑ (1 - Ð°Ð´Ð¼Ð¸Ð½Ð¸ÑÑ‚Ñ€Ð°Ñ‚Ð¾Ñ€, 0 - ÑÐ¾Ð¾Ñ‚Ð²ÐµÑ‚ÑÑ‚Ð²ÐµÐ½Ð½Ð¾ Ð³Ð¾ÑÑ‚ÑŒ)
+	protected $data; # Ð´Ð°Ð½Ð½Ñ‹Ðµ Ð°Ð´Ð¼Ð¸Ð½Ð¸ÑÑ‚Ñ€Ð°Ñ‚Ð¾Ñ€Ð°
 	
  	public function __construct(){
 			$this->data = $this->SelectLPE();
 	}
 	
-	# Ìåòîä àâòîðèçàöèè
+	# ÐœÐµÑ‚Ð¾Ð´ Ð°Ð²Ñ‚Ð¾Ñ€Ð¸Ð·Ð°Ñ†Ð¸Ð¸
 	
 	public function Login($l,$p){
 			if($l == $this->data['admin_name'] && md5($p) == $this->data['admin_password']){
@@ -23,7 +23,7 @@ class Auth{
 			}
 	}
 	
-	# Âûõîäà èç àêêàóíòà
+	# Ð’Ñ‹Ñ…Ð¾Ð´Ð° Ð¸Ð· Ð°ÐºÐºÐ°ÑƒÐ½Ñ‚Ð°
 	
 	public function Logout(){
 			setcookie('GPASS','',time()-3600);
@@ -31,7 +31,7 @@ class Auth{
 			header('Location: index.php');
 	}
 
-	# Ïðîâåðêà íà "çàëîãèíåííîñòü"
+	# ÐŸÑ€Ð¾Ð²ÐµÑ€ÐºÐ° Ð½Ð° "Ð·Ð°Ð»Ð¾Ð³Ð¸Ð½ÐµÐ½Ð½Ð¾ÑÑ‚ÑŒ"
 	
 	public function is_logged_in(){
 			if(isset($_COOKIE['GPASS']) && $_COOKIE['GPASS'] == $this->data['admin_password'])
@@ -40,7 +40,7 @@ class Auth{
 				$this->auth = 0;
 	}
 	
-	# Èñïîëüçîâàíèå àäìèí. äàííûõ
+	# Ð˜ÑÐ¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ð½Ð¸Ðµ Ð°Ð´Ð¼Ð¸Ð½. Ð´Ð°Ð½Ð½Ñ‹Ñ…
 	
 	public function ReturnData($value){
 			if(isset($this->data["$value"]))
@@ -49,7 +49,7 @@ class Auth{
 				return false;
 	}
 
-	# Çàïðîñ íà çàãðóçêó àäìèí. äàííûõ
+	# Ð—Ð°Ð¿Ñ€Ð¾Ñ Ð½Ð° Ð·Ð°Ð³Ñ€ÑƒÐ·ÐºÑƒ Ð°Ð´Ð¼Ð¸Ð½. Ð´Ð°Ð½Ð½Ñ‹Ñ…
 	
 	private function SelectLPE(){		
 		return dataBase::getInstance()->query("SELECT admin_name,admin_password,admin_email FROM data",false,true)->fetch(PDO::FETCH_ASSOC);
