@@ -67,18 +67,6 @@ class dataBase{
 			die('<br /><br /><br /><font face="Verdana"><div align="center"><fieldset style="width: 66%; border: 4px solid white; background: #35BDF5;"><div align="left"><b>[</b>PHP PDO Error ' . strval($err->getCode()) . '<b>]</b></div> <table border="0"><tr><td align="right"><b><u>Message:</u></b></td><td><i>' . $err->getMessage() . '</i></td></tr><tr><td align="right"><b><u>Code:</u></b></td><td><i>' . strval($err->getCode()) . '</i></td></tr><tr><td align="right"><b><u>File:</u></b></td><td><i>' . $err->getFile() . '</i></td></tr><tr><td align="right"><b><u>Line:</u></b></td><td><i>' . strval($err->getLine()) . '</i></td></tr></table></fieldset></div></font>');
 		}
 	}
-	
-	# небольшая надстройка над PDO::Fetch()
-	
-	public function fetch($fetch_style = PDO::FETCH_BOTH, $all = false){
-			if(!empty($this->result)){
-				if(!$all)
-					return $this->result->fetch($fetch_style);
-				else
-					return $this->result->fetchAll($fetch_style);
-			} else 
-				return false;
-	}
 
 	# разрыв соединения с БД при удалении объекта класса
 	

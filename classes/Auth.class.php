@@ -10,7 +10,7 @@ class Auth{
 			$this->data = $this->SelectLPE();
 	}
 	
-	# Метод авторизации
+	# Авторизация
 	
 	public function Login($l,$p){
 			if($l == $this->data['admin_name'] && md5($p) == $this->data['admin_password']){
@@ -19,7 +19,6 @@ class Auth{
 				header('Location: index.php');
 			} else {
 				$this->auth = 0;
-				var_dump(md5($p),$this->data['admin_password']);
 			}
 	}
 	
@@ -40,7 +39,7 @@ class Auth{
 				$this->auth = 0;
 	}
 	
-	# Использование админ. данных
+	# Использование админ. данных(логин, пароль, email)
 	
 	public function ReturnData($value){
 			if(isset($this->data["$value"]))

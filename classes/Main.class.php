@@ -1,11 +1,11 @@
 <?php
-
 class Main extends Auth{
-	public $config;
+	public $config, $Db;
 	
 	public function __construct(){
 		parent::__construct();
 		$this->config = parse_ini_file('./data/global_config.cfg');
+		$this->Db = dataBase::getInstance();
 	}
 
 	public function save($who, $msg, $name='', $email=''){
@@ -13,16 +13,16 @@ class Main extends Auth{
 			$dt = time();
 			switch($who){
 				case 'a':
-						dataBase::getInstance()->query("INSERT INTO msgs(name,email,msg,ip,datetime) VALUES('{$this->data['admin_name']}','{$this->data['admin_email']}',:msg,:ip,:dt)",array(":msg"=>"$msg",":ip"=>"$ip",":dt"=>"$dt"));
+						$this->Db->query("INSERT INTO msgs(name,email,msg,ip,datetime) VALUES('{$this->data['admin_name']}','{$this->data['admin_email']}',:msg,:ip,:dt)",array(":msg"=>"$msg",":ip"=>"$ip",":dt"=>"$dt"));
 							break;
 				case 'g': 	
 						if(isset($_COOKIE['UNIQID'])) {
 							$uniqid = $this->clear($_COOKIE['UNIQID']);
-							dataBase::getInstance()->query("INSERT INTO msgs(name,email,msg,uniqid,ip,datetime) VALUES(:name,:email,:msg,:uniqid,:ip,:dt)",array(":name"=>"$name",":email"=>"$email",":msg"=>"$msg",":uniqid"=>"$uniqid",":ip"=>"$ip",":dt"=>"$dt"));
+							$this->Db->query("INSERT INTO msgs(name,email,msg,uniqid,ip,datetime) VALUES(:name,:email,:msg,:uniqid,:ip,:dt)",array(":name"=>"$name",":email"=>"$email",":msg"=>"$msg",":uniqid"=>"$uniqid",":ip"=>"$ip",":dt"=>"$dt"));
 						} else {
 							$uniqid = md5(uniqid());
 							setcookie("UNIQID",$uniqid,time()+86400);
-							dataBase::getInstance()->query("INSERT INTO msgs(name,email,msg,uniqid,ip,datetime) VALUES(:name,:email,:msg,:uniqid,:ip,:dt)",array(":name"=>"$name",":email"=>"$email",":msg"=>"$msg",":uniqid"=>"$uniqid",":ip"=>"$ip",":dt"=>"$dt"));
+							$this->Db->query("INSERT INTO msgs(name,email,msg,uniqid,ip,datetime) VALUES(:name,:email,:msg,:uniqid,:ip,:dt)",array(":name"=>"$name",":email"=>"$email",":msg"=>"$msg",":uniqid"=>"$uniqid",":ip"=>"$ip",":dt"=>"$dt"));
 						}
 						break;
 			}
@@ -31,27 +31,27 @@ class Main extends Auth{
 	public function getMessage($start, $perpage){
 			if(isset($_SESSION['sort'])){
 				switch($_SESSION['sort']){
-					case 'ascending': $query = dataBase::getInstance()->query("SELECT id, name, email, msg, uniqid, ip, datetime FROM msgs ORDER BY id ASC LIMIT $start, $perpage",false,true);break;
-					case 'descending': $query = dataBase::getInstance()->query("SELECT id, name, email, msg, uniqid, ip, datetime FROM msgs ORDER BY id DESC LIMIT $start, $perpage",false,true);break;
-					default: $query = dataBase::getInstance()->query("SELECT id, name, email, msg, uniqid, ip, datetime FROM msgs ORDER BY id DESC LIMIT $start, $perpage",false,true);break;
+					case 'ascending': $sql = "SELECT id, name, email, msg, uniqid, ip, datetime FROM msgs ORDER BY id ASC LIMIT {$start}, {$perpage}";break;
+					case 'descending': $sql = "SELECT id, name, email, msg, uniqid, ip, datetime FROM msgs ORDER BY id DESC LIMIT {$start}, {$perpage}";break;
+					default: $sql = "SELECT id, name, email, msg, uniqid, ip, datetime FROM msgs ORDER BY id DESC LIMIT {$start}, {$perpage}";break;
 				}
 			} else
-				$query = dataBase::getInstance()->query("SELECT id, name, email, msg, uniqid, ip, datetime FROM msgs ORDER BY id DESC LIMIT $start, $perpage",false,true);
+				$sql = "SELECT id, name, email, msg, uniqid, ip, datetime FROM msgs ORDER BY id DESC LIMIT {$start}, {$perpage}";
 
-		return $query->fetchAll(PDO::FETCH_ASSOC);
+		return $this->Db->query($sql,false,true)->fetchAll(PDO::FETCH_ASSOC);;
 		
 	}
 	
 	public function deleteMessage($all, $id=''){
 			if(!$all)
-				dataBase::getInstance()->query("DELETE FROM msgs WHERE id = {$id}");
+				$this->Db->query('DELETE FROM msgs WHERE id = :id',array(':id'=>$id));
 			else
-				dataBase::getInstance()->query("DELETE FROM msgs");
+				$this->Db->query('DELETE FROM msgs');
 		}
 	
 	public function is_uniqid($id){
-				$result = dataBase::getInstance()->query("SELECT uniqid FROM msgs WHERE id = {$id}",false,true)->fetch(PDO::FETCH_NUM);
-				$uniqid = $_COOKIE["UNIQID"];
+				$result = $this->Db->query('SELECT uniqid FROM msgs WHERE id = :id',array(':id'=>$id),true)->fetch(PDO::FETCH_NUM);
+				$uniqid = $_COOKIE['UNIQID'];
 				 if($result[0] == $uniqid)
 					return true;
 				else
@@ -59,7 +59,7 @@ class Main extends Auth{
 	}
 	
 	public function PagCount(){
-			$result = dataBase::getInstance()->query("SELECT COUNT(*) AS count FROM msgs",false,true)->fetch(PDO::FETCH_ASSOC);
+			$result = $this->Db->query('SELECT COUNT(*) AS count FROM msgs',false,true)->fetch(PDO::FETCH_ASSOC);
 		return $result['count'];
 	}
 	
@@ -72,12 +72,23 @@ class Main extends Auth{
 	}
 	
 	public function updBans(){
-		$data = dataBase::getInstance()->query("SELECT data FROM bans",false,true)->fetch(PDO::FETCH_NUM, true);
+		$data = $this->Db->query('SELECT data FROM bans',false,true)->fetchAll(PDO::FETCH_NUM);
 		$banip = '';
-		foreach($data as $ip){
-			$banip .= $ip[0] . "\n";
+		if($data !== false){
+			foreach($data as $ip){		
+				$banip .= $ip[0]."\n";
+			}
+			file_put_contents($this->config['PATH_TO_FILE_BANS'],$banip);
 		}
-		file_put_contents($this->config['PATH_TO_FILE_BANS'],$banip);
+		
+	}
+	
+	public function addIP($ip){
+		$data = $ip;
+		if(filter_var($ip, FILTER_VALIDATE_IP))
+			$dt = $this->Db->query('INSERT INTO bans(data) VALUES(:data)',array(':data'=>$data));
+		else
+			return false;
 	}
 }
 ?>

@@ -15,8 +15,6 @@ include 'gbook.lib.php';
 		$gbook->Logout();
 	if(isset($_POST['sort']))
 		setSortMessage($_POST['sort']);
-	
-	if((isset($_GET['del']) || isset($_GET['delall'])) && ($gbook->auth == 1 || $gbook->is_uniqid($_GET['del']))) include 'deletepost.inc.php';
 		
 	$template->open('main.tpl', 'main');
 	$template->open('editor.tpl','editor');
