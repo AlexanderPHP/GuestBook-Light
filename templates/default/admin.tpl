@@ -29,11 +29,11 @@
 		<div id="rightmenu">
 			<ul>
 				<li><a href="admin.php?action=main" title="Главная">Главная</a></li>
-				<li><a href="admin.php?action=setting" title="Настройки скрипта">Настройки</a></li>
-				<li><a href="admin.php?action=sql" title="Работа с Базой Данных">Работа с БД</a></li>
-				<li><a href="admin.php?action=tool" title="Тул">Оминка</a></li>
+				<li><a href="admin.php?action=setting" title="Настройки скрипта">Настройки</a></li>	
 				<li><a href="admin.php?action=bans" title="Блокировка пользователей">Блокировка пользователей</a></li>
-				<li><a href="#5" title="###">###</a></li>	
+				<!--<li><a href="#5" title="###">###</a></li>
+				<li><a href="admin.php?action=sql" title="Работа с Базой Данных">Работа с БД</a></li>
+				<li><a href="admin.php?action=tool" title="Тул">Оминка</a></li>-->
 			</ul>
 		</div>
 	  </div>
