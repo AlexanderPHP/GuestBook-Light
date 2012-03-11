@@ -59,10 +59,10 @@ $gbook->is_logged_in(); // залогинен?
 	
  	function bbcode($text) {
 			$str_search = array(
-				'/\[b\](.+?)\[\/b\]/is',
-				'/\[i\](.+?)\[\/i\]/is',
-				'/\[s\](.+?)\[\/s\]/is',
-				'/\[u\](.+?)\[\/u\]/is');
+				'/\(b\)(.+?)\(\/b\)/is',
+				'/\(i\)(.+?)\(\/i\)/is',
+				'/\(s\)(.+?)\(\/s\)/is',
+				'/\(u\)(.+?)\(\/u\)/is');
 			$str_replace = array(
 				'<b>\\1</b>',
 				'<span style="font-style:italic">\\1</span>',
