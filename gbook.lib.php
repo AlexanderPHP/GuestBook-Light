@@ -62,22 +62,12 @@ $gbook->is_logged_in(); // залогинен?
 				'/\[b\](.+?)\[\/b\]/is',
 				'/\[i\](.+?)\[\/i\]/is',
 				'/\[s\](.+?)\[\/s\]/is',
-				'/\[u\](.+?)\[\/u\]/is',
-		//		'/\[url=(.+?)\](.+?)\[\/url\]/is',
-		//		'/\[url\](.+?)\[\/url\]/is',
-		//		'/\[img\](.+?)\[\/img\]/is',
-		//		'/\[size=(.+?)\](.+?)\[\/size\]/is',
-				'/\[color=(.+?)\](.+?)\[\/color\]/is');
+				'/\[u\](.+?)\[\/u\]/is');
 			$str_replace = array(
 				'<b>\\1</b>',
 				'<span style="font-style:italic">\\1</span>',
 				'<span style="text-decoration:line-through">\\1</span>',
-				'<span style="text-decoration:underline">\\1</span>',
-		//		'<a href="\\1">\\2</a>',
-		//		'<a href="\\1">\\1</a>',
-		//		'<img src="\\1" />',
-		//		'<span style="font-size:\\1pt">\\2</span>',
-				'<span style="color:\\">\\2</span>');
+				'<span style="text-decoration:underline">\\1</span>');
 			return preg_replace($str_search, $str_replace, $text);
 	}
 
